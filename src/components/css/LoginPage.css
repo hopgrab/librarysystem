@@ -33,8 +33,8 @@
   }
   
   .logo-image {
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 40px;
     margin-right: 15px;
     border-radius: 50%;
     object-fit: cover;
@@ -42,7 +42,7 @@
   
   .academy-name {
     color: white;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 500;
   }
   
