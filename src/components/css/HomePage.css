@@ -56,7 +56,7 @@
     align-items: center;
   }
   
-  .nav-link {
+  .nav-link, .nav-link:hover {
     margin: 0 12px;
     text-decoration: none;
     color: #444;
@@ -69,7 +69,7 @@
     color: #000;
   }
   
-  .login-button {
+  .login-button, .login-button:hover {
     padding: 8px 16px;
     background-color: #2a8c63;
     color: white;
@@ -235,10 +235,10 @@
   
   /* Responsive adjustments */
   @media (max-width: 768px) {
-    .nav-links {
+    .nav-links{
       display: none;
     }
-    
+
     .announcements-container {
       grid-template-columns: 1fr;
     }
