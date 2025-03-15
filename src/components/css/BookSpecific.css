@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+  
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.announcement-container {
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 3%; 
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+  
+.nav-logo-container {
+    display: flex;
+    align-items: center;
+}
+  
+.nav-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+}
+  
+.nav-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+  
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+  
+.nav-link, .nav-link:hover {
+    margin: 0 12px;
+    text-decoration: none;
+    color: #444;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+  
+.nav-link.active {
+    font-weight: 600;
+    color: #000;
+}
+  
+.login-button, .login-button:hover {
+    padding: 8px 16px;
+    background-color: #2a8c63;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-left: 12px;
+}
+
+/* Book Details Styling */
+.book-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-button-container {
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.back-button {
+    padding: 8px 16px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+    color: #000;
+}
+
+.back-button:hover {
+    background-color: #f5f5f5;
+}
+
+.book-details {
+    display: flex;
+    flex-direction: row; /* Changed back to row */
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+}
+
+.book-cover {
+    flex: 0 0 300px; 
+    height: 400px;
+    background-color: bisque;
+    padding: 0;
+    box-shadow: none;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.book-info {
+    flex: 1; 
+    width: 100%;
+    background-color: transparent; 
+    padding: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.author-status-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.book-author {
+    font-size: 16px;
+    color: #555;
+    margin-right: 15px;
+}
+
+.book-status {
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.book-status.available {
+    background-color: #e3f9e5;
+    color: #2a8c63;
+}
+
+.book-status.borrowed {
+    background-color: #fff4e5;
+    color: #ff9800;
+}
+
+.book-status.missing {
+    background-color: #ffebee;
+    color: #f44336;
+}
+
+.book-synopsis {
+    margin-bottom: 25px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.book-actions {
+    display: flex;
+    gap: 10px;
+    background-color: transparent;
+    color: #2a8c63;
+}
+
+.borrow-button, .reserve-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    background-color: #2a8c63; 
+    color: white; 
+}
+
+.borrow-button:hover:not(:disabled),
+.reserve-button:hover:not(:disabled) {
+    background-color: #237553; 
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+}

@@ -62,15 +62,15 @@ const BooksPageStu = () => {
     const getStatusColor = (status) => {
         switch(status) {
             case 'Available':
-                return '#2a8c63'; // Green
+                return '#2a8c63';
             case 'Borrowed':
-                return '#f59e0b'; // Amber
+                return '#f59e0b';
             case 'Not for borrowing':
-                return '#6b7280'; // Gray
+                return '#6b7280';
             case 'Missing':
-                return '#ef4444'; // Red
+                return '#ef4444';
             default:
-                return '#6b7280'; // Default gray
+                return '#6b7280';
         }
     };
 
@@ -111,16 +111,16 @@ const BooksPageStu = () => {
                             className={`tab-button ${activeTab === 'Books' ? 'active' : ''}`}
                             onClick={() => setActiveTab('Books')}
                         >
-                            <FaBook className="tab-icon" />
+                            <FaBook />
                             Books
                         </button>
-                        
                         <button 
-                            className={`tab-button ${activeTab === 'History' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('History')}
+                            className={`tab-button ${activeTab === 'Borrowed Books' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('Borrowed Books')}
                         >
-                            History
+                            Borrowed Books
                         </button>
+                        
                     </div>
                 </div>
             </div>
@@ -132,8 +132,11 @@ const BooksPageStu = () => {
                             <img src={book.image} alt={book.title} className="book-image" />
                         </div>
                         <div className="book-details">
-                            <h3 className="book-title">{book.title}</h3>
-                            <p className="book-author">By: {book.author}</p>
+                            <div className="book-info">
+                                <div className="book-title">{book.title}</div>
+                                <br />
+                                <div className="book-author">By: {book.author}</div>
+                            </div>
                             <div className="book-meta">
                                 <span className="book-genre">{book.genre}</span>
                                 <span 
@@ -150,5 +153,4 @@ const BooksPageStu = () => {
         </div>
     );
 };
-
 export default BooksPageStu;

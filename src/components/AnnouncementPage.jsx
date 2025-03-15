@@ -46,40 +46,38 @@ const AnnouncementPage = () => {
                     <a href="#" className="login-button">Login</a>
                 </div>
             </nav>
-
-            <div className="banner-container">
-                <div className="banner-image"></div>
-            </div>
-            
-            <div className="announcements-section">
-                <h1 className="announcements-title">Announcements</h1>
-                
-                <div className="search-container">
-                    <input 
-                        type="text" 
-                        placeholder="Search here" 
-                        className="search-input"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <button className="search-button">
-                        <FaSearch />
-                    </button>
-                </div>
-                
-                <div className="announcements-list">
-                    {announcements.map(announcement => (
-                        <div className="announcement-item" key={announcement.id}>
-                            <div className="announcement-date">
-                                <div className="date-month">{announcement.date}</div>
-                                <div className="date-year">{announcement.year}</div>
+        
+            <div className="content-wrapper">
+                <div className="announcements-section">
+                    <h1 className="announcements-title">Announcements</h1>
+                    
+                    <div className="search-container">
+                        <input 
+                            type="text" 
+                            placeholder="Search here" 
+                            className="search-input"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <button className="search-button">
+                            <FaSearch />
+                        </button>
+                    </div>
+                    
+                    <div className="announcements-list">
+                        {announcements.map(announcement => (
+                            <div className="announcement-item" key={announcement.id}>
+                                <div className="announcement-date">
+                                    <div className="date-month">{announcement.date}</div>
+                                    <div className="date-year">{announcement.year}</div>
+                                </div>
+                                <div className="announcement-content">
+                                    <h3 className="announcement-title">{announcement.title}</h3>
+                                    <p className="announcement-description">{announcement.content}</p>
+                                </div>
                             </div>
-                            <div className="announcement-content">
-                                <h3 className="announcement-title">{announcement.title}</h3>
-                                <p className="announcement-description">{announcement.content}</p>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

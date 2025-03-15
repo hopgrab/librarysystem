@@ -107,85 +107,86 @@ const HomePage = () => {
         <div className="banner-image"></div>
       </div>
       
-      {/* Main Content */}
-      <div className="main-content">
-        {/* New Arrivals Section */}
-        <section className="carousel-section">
-          <div className="section-header">
-            <h2 className="section-title">New Arrivals</h2>
-            <a href="#" className="view-all">View All</a>
-          </div>
-          
-          <div className="carousel-container">
-            <button className="carousel-nav prev" onClick={prevNewArrivals}>
-              &#10094;
-            </button>
-            
-            <div className="carousel-items">
-              {displayedNewArrivals.map(item => (
-                <div key={item.id} className="carousel-card">
-                  <div className="card-image"></div>
-                  <div className="card-details">
-                    <h3>{item.title}</h3>
-                    <p>{item.author}</p>
-                  </div>
-                </div>
-              ))}
+      <div className="content-wrapper">
+        <div className="main-content">
+          {/* New Arrivals Section */}
+          <section className="carousel-section">
+            <div className="section-header">
+              <h2 className="section-title" style={{ marginTop: '50px' }}>New Arrivals</h2>
+              <a href="#" className="view-all">View All</a>
             </div>
             
-            <button className="carousel-nav next" onClick={nextNewArrivals}>
-              &#10095;
-            </button>
-          </div>
-        </section>
-        
-        {/* Catalogue Section */}
-        <section className="carousel-section">
-          <div className="section-header">
-            <h2 className="section-title">Catalogue</h2>
-            <a href="#" className="view-all">View All</a>
-          </div>
-          
-          <div className="carousel-container">
-            <button className="carousel-nav prev" onClick={prevCatalogue}>
-              &#10094;
-            </button>
-            
-            <div className="carousel-items">
-              {displayedCatalogue.map(item => (
-                <div key={item.id} className="carousel-card">
-                  <div className="card-image"></div>
-                  <div className="card-details">
-                    <h3>{item.title}</h3>
-                    <p>{item.author}</p>
+            <div className="carousel-container">
+              <button className="carousel-nav prev" onClick={prevNewArrivals}>
+                &#10094;
+              </button>
+              
+              <div className="carousel-items">
+                {displayedNewArrivals.map(item => (
+                  <div key={item.id} className="carousel-card">
+                    <div className="card-image"></div>
+                    <div className="card-details">
+                      <h3>{item.title}</h3>
+                      <p>{item.author}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            
-            <button className="carousel-nav next" onClick={nextCatalogue}>
-              &#10095;
-            </button>
-          </div>
-        </section>
-        
-        {/* Announcements Section */}
-        <section className="announcements-section">
-          <div className="section-header">
-            <h2 className="section-title">Announcements</h2>
-            <a href="#" className="view-all">View All</a>
-          </div>
-          
-          <div className="announcements-container">
-            {announcements.map(announcement => (
-              <div key={announcement.id} className="announcement-card">
-                <div className="announcement-date">{announcement.date}</div>
-                <h3 className="announcement-title">{announcement.title}</h3>
-                <p className="announcement-content">{announcement.content}</p>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
+              
+              <button className="carousel-nav next" onClick={nextNewArrivals}>
+                &#10095;
+              </button>
+            </div>
+          </section>
+          
+          {/* Catalogue Section */}
+          <section className="carousel-section">
+            <div className="section-header">
+              <h2 className="section-title">Catalogue</h2>
+              <a href="#" className="view-all">View All</a>
+            </div>
+            
+            <div className="carousel-container">
+              <button className="carousel-nav prev" onClick={prevCatalogue}>
+                &#10094;
+              </button>
+              
+              <div className="carousel-items">
+                {displayedCatalogue.map(item => (
+                  <div key={item.id} className="carousel-card">
+                    <div className="card-image"></div>
+                    <div className="card-details">
+                      <h3>{item.title}</h3>
+                      <p>{item.author}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <button className="carousel-nav next" onClick={nextCatalogue}>
+                &#10095;
+              </button>
+            </div>
+          </section>
+          
+          {/* Announcements Section */}
+          <section className="announcements-section">
+            <div className="section-header">
+              <h2 className="section-title">Announcements</h2>
+              <a href="#" className="view-all">View All</a>
+            </div>
+            
+            <div className="announcements-container">
+              {announcements.map(announcement => (
+                <div key={announcement.id} className="announcement-card">
+                  <div className="announcement-date">{announcement.date}</div>
+                  <h3 className="announcement-title">{announcement.title}</h3>
+                  <p className="announcement-content">{announcement.content}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );
