@@ -1,12 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import supabase from '../../backend/supabase-client';
-import './css/ManageAccount.css';
-import useAuth from './hooks/useAuth';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import supabase from "../../backend/supabase-client";
+import "./css/ManageAccount.css";
+import useAuth from "./hooks/useAuth";
 
 const ManageAccount = () => {
     const { session, isAdmin } = useAuth();
     const [unauthorizedWarning, setUnauthorizedWarning] = useState(false);
+    const [accounts, setAccounts] = useState([]);
+    const [filteredAccounts, setFilteredAccounts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
+
+    const [editingAccount, setEditingAccount] = useState(null);
+    const [editEmail, setEditEmail] = useState("");
+    const [editRole, setEditRole] = useState("Staff");
+    const [editStatus, setEditStatus] = useState("Active");
 
     useEffect(() => {
         if (session !== null && isAdmin === false) {
@@ -35,16 +45,16 @@ const ManageAccount = () => {
             setLoading(true);
             try {
                 const { data, error } = await supabase
-                    .from('staff')
-                    .select('staff_id, email, is_admin, status');
+                    .from("staff")
+                    .select("staff_id, email, is_admin, status");
 
                 if (error) throw error;
 
                 setAccounts(data);
                 setFilteredAccounts(data);
             } catch (err) {
-                setError('Failed to fetch accounts.');
-                console.error('Error fetching accounts:', err.message);
+                setError("Failed to fetch accounts.");
+                console.error("Error fetching accounts:", err.message);
             } finally {
                 setLoading(false);
             }
@@ -53,27 +63,12 @@ const ManageAccount = () => {
         fetchAccounts();
     }, []);
 
-    const handleCreateAccount = async () => {
-        const trimmedEmail = newEmail.trim();
-        const trimmedPassword = newPassword.trim();
-        const trimmedFirstName = newFirstName.trim();
-        const trimmedMiddleName = newMiddleName.trim();
-        const trimmedLastName = newLastName.trim();
-        const trimmedContactNum = newContactNum.trim();
-
-        if (!trimmedEmail || !trimmedPassword || !trimmedFirstName || !trimmedLastName || !trimmedContactNum) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        try {
-            // Step 1: Create user in Supabase Auth
-            const { data: authData, error: authError } = await supabase.auth.signUp({
-                email: trimmedEmail,
-                password: trimmedPassword
-            });
-
-            if (authError) throw authError;
+    const handleEditAccount = (account) => {
+        setEditingAccount(account.staff_id);
+        setEditEmail(account.email);
+        setEditRole(account.is_admin ? "Admin" : "Staff");
+        setEditStatus(account.status);
+    };
 
             const userId = authData.user.id; // Get user_id from Supabase Auth
 
@@ -158,74 +153,12 @@ const ManageAccount = () => {
 
             <div className="filter-controls">
                 <label>Show:</label>
-                <select value={statusFilter} onChange={filterByStatus}>
+                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                     <option value="all">All</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                 </select>
             </div>
-
-            {isAdmin && (
-                <div className="admin-actions">
-                    {!showCreateForm ? (
-                        <button className="new-account-button" onClick={() => setShowCreateForm(true)}>
-                            + New Account
-                        </button>
-                    ) : (
-                        <div className="create-account">
-                            <h3>Create New Account</h3>
-                            <input
-                                type="text"
-                                placeholder="First Name"
-                                value={newFirstName}
-                                onChange={(e) => setNewFirstName(e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Middle Name (Optional)"
-                                value={newMiddleName}
-                                onChange={(e) => setNewMiddleName(e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Last Name"
-                                value={newLastName}
-                                onChange={(e) => setNewLastName(e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Contact Number"
-                                value={newContactNum}
-                                onChange={(e) => setNewContactNum(e.target.value)}
-                            />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={newEmail}
-                                onChange={(e) => setNewEmail(e.target.value)}
-                            />
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                            />
-                            <select value={newRole} onChange={(e) => setNewRole(e.target.value)}>
-                                <option value="Staff">Staff</option>
-                                <option value="Admin">Admin</option>
-                            </select>
-                            <select value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                            </select>
-                            <div className="create-account-buttons">
-                                <button onClick={handleCreateAccount}>Create</button>
-                                <button className="cancel-button" onClick={() => setShowCreateForm(false)}>Cancel</button>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
 
             {filteredAccounts.length > 0 ? (
                 <table className="account-table">
@@ -234,20 +167,50 @@ const ManageAccount = () => {
                             <th>Email</th>
                             <th>Role</th>
                             <th>Status</th>
+                            {isAdmin && <th>Actions</th>}
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredAccounts.map(account => (
+                        {filteredAccounts.map((account) => (
                             <tr key={account.staff_id}>
                                 <td>{account.email}</td>
                                 <td>{account.is_admin ? "Admin" : "Staff"}</td>
                                 <td>{account.status}</td>
+                                {isAdmin && (
+                                    <td>
+                                        <button onClick={() => handleEditAccount(account)}>Edit</button>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>
                 </table>
             ) : (
                 <p>No accounts found.</p>
+            )}
+
+            {editingAccount && (
+                <div className="edit-account-form">
+                    <h3>Edit Account</h3>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={editEmail}
+                        onChange={(e) => setEditEmail(e.target.value)}
+                    />
+                    <select value={editRole} onChange={(e) => setEditRole(e.target.value)}>
+                        <option value="Staff">Staff</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                    <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                    <div className="edit-account-buttons">
+                        <button onClick={handleUpdateAccount}>Save</button>
+                        <button className="cancel-button" onClick={() => setEditingAccount(null)}>Cancel</button>
+                    </div>
+                </div>
             )}
 
             <div className="back-button-container">

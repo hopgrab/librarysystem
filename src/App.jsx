@@ -9,6 +9,7 @@ import AddBookForm from './components/AddBookForm';
 import ReservationList from './components/ReservationList';
 import BorrowBookForm from './components/BorrowingBookForm';
 import ManageAccount from './components/ManageAccount';
+import ResetPassword from './components/ResetPassword';
 
 // For routing and backend
 import React, { useState, useEffect } from 'react';
@@ -54,6 +55,7 @@ function App() {
         <Route path="/pending-reservations" element={<ReservationList />} />
         <Route path="/borrow-book" element={<BorrowBookForm />} />
         <Route path="/manage-account" element={<ManageAccount />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Router>
   );
