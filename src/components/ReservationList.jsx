@@ -12,13 +12,22 @@ const ReservationList = () => {
     const [filterDate, setFilterDate] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
 
-    const handleCheckOut = async (reservationId, bookId, itemId, reserverFn, reserverLn) => {
+    const handleCheckOut = async (reservationId, bookId, reserverFn, reserverLn) => {
         try {
             const { data: { user }, error: sessionError } = await supabase.auth.getUser();
             if (sessionError) throw sessionError;
             if (!user) throw new Error("No logged-in user found");
     
             const staffId = user.id;  
+    
+            // Fetch the current book status
+            const { data: bookData, error: bookFetchError } = await supabase
+                .from('books')
+                .select('status')
+                .eq('book_id', bookId)
+                .single();
+    
+            if (bookFetchError) throw bookFetchError;
     
             // Update reservation status to "Checked Out"
             const { error: reservationError } = await supabase
@@ -34,8 +43,8 @@ const ReservationList = () => {
                 .insert([
                     {
                         staff_id: staffId,
-                        item_id: itemId,   
-                        action: 'Check Out',
+                        item_id: bookId,   
+                        action: 'Borrow',
                         recipient_fn: reserverFn,
                         recipient_ln: reserverLn
                     }
@@ -43,7 +52,17 @@ const ReservationList = () => {
     
             if (logError) throw logError;
     
-            // **Update UI State Properly**
+            // **If book was 'Reserved', change it back to 'Available'**
+            if (bookData.status === 'Reserved') {
+                const { error: bookUpdateError } = await supabase
+                    .from('books')
+                    .update({ status: 'Borrowed' })
+                    .eq('book_id', bookId);
+    
+                if (bookUpdateError) throw bookUpdateError;
+            }
+    
+            // **Update state properly**
             setReservations(prev =>
                 prev.map(reservation =>
                     reservation.reservation_id === reservationId
@@ -52,10 +71,22 @@ const ReservationList = () => {
                             status: 'Checked Out',
                             books: {
                                 ...reservation.books,
-                                items: {
-                                    ...reservation.books.items,
-                                    copies_available: newCopiesAvailable // Update the available copies
-                                }
+                                status: bookData.status === 'Reserved' ? 'Available' : reservation.books.status
+                            }
+                        }
+                        : reservation
+                )
+            );
+    
+            setFilteredReservations(prev =>
+                prev.map(reservation =>
+                    reservation.reservation_id === reservationId
+                        ? { 
+                            ...reservation, 
+                            status: 'Checked Out',
+                            books: {
+                                ...reservation.books,
+                                status: bookData.status === 'Reserved' ? 'Available' : reservation.books.status
                             }
                         }
                         : reservation
@@ -66,7 +97,6 @@ const ReservationList = () => {
             console.error('Error checking out reservation:', err.message);
         }
     };
-    
 
     useEffect(() => {
         const fetchReservations = async () => {
@@ -105,6 +135,15 @@ const ReservationList = () => {
     }, []);
 
     const handleApprove = async (reservationId, bookId, itemId) => {
+        console.log("reservationId:", reservationId);
+        console.log("bookId:", bookId);
+        console.log("itemId:", itemId);
+    
+        if (!reservationId || !bookId || !itemId) {
+            console.error("Missing or invalid IDs");
+            return;
+        }
+    
         try {
             // Fetch the current available copies
             const { data: itemData, error: fetchError } = await supabase
@@ -122,7 +161,7 @@ const ReservationList = () => {
     
             const newCopiesAvailable = Math.max(0, itemData.copies_available - 1);
     
-            // Update the items table
+            // Update the items table (decrease available copies)
             const { error: itemError } = await supabase
                 .from('items')
                 .update({ copies_available: newCopiesAvailable })
@@ -130,7 +169,7 @@ const ReservationList = () => {
     
             if (itemError) throw itemError;
     
-            // Update reservation status
+            // Update reservation status to "Accepted"
             const { error: reservationError } = await supabase
                 .from('reservations')
                 .update({ status: 'Accepted' })
@@ -138,15 +177,17 @@ const ReservationList = () => {
     
             if (reservationError) throw reservationError;
     
-            // Update book status
-            const { error: bookError } = await supabase
-                .from('books')
-                .update({ status: 'Reserved' })
-                .eq('book_id', bookId);
+            // **Only update book status if copies_available becomes 0**
+            if (newCopiesAvailable === 0) {
+                const { error: bookError } = await supabase
+                    .from('books')
+                    .update({ status: 'Reserved' })
+                    .eq('book_id', bookId);
     
-            if (bookError) throw bookError;
+                if (bookError) throw bookError;
+            }
     
-            // **Update state properly**
+            // **Update UI State Properly**
             setReservations(prev => {
                 const updatedReservations = prev.map(reservation =>
                     reservation.reservation_id === reservationId
@@ -170,7 +211,9 @@ const ReservationList = () => {
         } catch (err) {
             console.error('Error approving reservation:', err.message);
         }
-    };    
+    };
+    
+    
 
     const handleDeny = async (reservationId) => {
         try {
@@ -306,7 +349,6 @@ const ReservationList = () => {
                                             onClick={() => handleCheckOut(
                                                 reservation.reservation_id, 
                                                 reservation.book_id, 
-                                                reservation.books?.items?.item_id, 
                                                 reservation.reserver_fn, 
                                                 reservation.reserver_ln
                                             )}
@@ -317,7 +359,7 @@ const ReservationList = () => {
                                         <>
                                             <button 
                                                 className="approve-button"
-                                                onClick={() => handleApprove(reservation.reservation_id, reservation.book_id)}
+                                                onClick={() => handleApprove(reservation.reservation_id, reservation.book_id, reservation.book_id)}
                                                 disabled={reservation.status === 'Accepted' || reservation.books?.items?.copies_available <= 0}
                                                 style={{
                                                     backgroundColor: (reservation.status === 'Accepted' || reservation.books?.items?.copies_available <= 0) ? '#ccc' : '#4CAF50',

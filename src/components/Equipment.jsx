@@ -86,7 +86,7 @@ const Equipment = () => {
                     {session && (
                         <>
                             <a href="#" className="nav-link active">Equipment</a>
-                            {isAdmin && <Link to="/management" className="nav-link">Management</Link>}
+                            {isAdmin && <Link to="/manage-account" className="nav-link">Management</Link>}
                         </>
                     )}
                     {session ? (

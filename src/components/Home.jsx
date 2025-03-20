@@ -45,15 +45,13 @@ const Home = () => {
       if (error) {
         console.error('Error fetching books:', error);
       } else {
-        // Format books with image URLs
         const formattedBooks = data.map(book => ({
           book_id: book.book_id,
           title: book.title,
           author: book.author,
-          image: book.items ? book.items.image : null, // Ensure image exists
+          image: book.items ? book.items.image : null,
         }));
   
-        // Fill placeholders if fewer than 10 books
         const filledBooks = [...formattedBooks, ...placeholders.slice(formattedBooks.length)];
         setNewArrivals(filledBooks);
       }
@@ -62,6 +60,25 @@ const Home = () => {
     fetchBooks();
   }, []);
   
+  const [announcements, setAnnouncements] = useState([]);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      const { data, error } = await supabase
+        .from('announcements')
+        .select('*')
+        .order('time', { ascending: false })
+        .limit(3);
+
+      if (error) {
+        console.error('Error fetching announcements:', error);
+      } else {
+        setAnnouncements(data);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
 
   // Carousel navigation
   const nextNewArrivals = () => {
@@ -159,28 +176,26 @@ const Home = () => {
             </div>
             
             <div className="announcements-container">
-              {/* Hardcoded Announcements */}
-              <div className="announcement-card">
-                <div className="announcement-date">Feb 28, 2025</div>
-                <h3 className="announcement-title">Library System Update</h3>
-                <p className="announcement-content">
-                  Our digital library system will undergo maintenance on Feb 28 from 10 PM - 12 AM.
-                </p>
-              </div>
-              <div className="announcement-card">
-                <div className="announcement-date">Feb 20, 2025</div>
-                <h3 className="announcement-title">New Arrivals: March Collection</h3>
-                <p className="announcement-content">
-                  Exciting news! We've added 50+ new books across fiction and non-fiction categories.
-                </p>
-              </div>
-              <div className="announcement-card">
-                <div className="announcement-date">Feb 15, 2025</div>
-                <h3 className="announcement-title">Reminder: Return Overdue Books</h3>
-                <p className="announcement-content">
-                  Please return overdue books by Feb 18 to avoid late fees. Check your borrowed items list.
-                </p>
-              </div>
+              {announcements.length > 0 ? (
+                announcements.map((announcement) => (
+                  <div key={announcement.id} className="announcement-card">
+                    <div className="announcement-date">
+                      {new Date(announcement.time).toLocaleString('en-US', {
+                        month: 'short',
+                        day: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                      })}
+                    </div>
+                    <h3 className="announcement-title">{announcement.title}</h3>
+                    <p className="announcement-content">{announcement.content}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No announcements available.</p>
+              )}
             </div>
           </section>
         </div>

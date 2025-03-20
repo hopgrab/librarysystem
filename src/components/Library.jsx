@@ -133,7 +133,7 @@ const Library = () => {
                     {session && (
                         <>
                             <Link to ="/equipment" className="nav-link">Equipment</Link>
-                            {isAdmin && <Link to="/management" className="nav-link">Management</Link>}
+                            {isAdmin && <Link to="/manage-account" className="nav-link">Management</Link>}
                         </>
                     )}
                     {session ? (
