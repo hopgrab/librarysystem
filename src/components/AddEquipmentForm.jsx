@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../backend/supabase-client";
 import useAuth from "./hooks/useAuth";
+import './css/AddEquipmentForm.css';
 
 const AddEquipmentForm = () => {
     const { session } = useAuth();
