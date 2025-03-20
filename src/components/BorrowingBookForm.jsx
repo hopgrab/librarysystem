@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../backend/supabase-client";
 import "./css/BorrowingBookForm.css"
+import NavBar from "./Nav";
 
 const BorrowBookForm = () => {
     const navigate = useNavigate();
@@ -145,6 +146,7 @@ const BorrowBookForm = () => {
 
     return (
         <div className="form-container">
+            <NavBar />
             <h2>Borrow or Return a Book</h2>
             {error && <p className="error">{error}</p>}
             <form onSubmit={handleSubmit}>
