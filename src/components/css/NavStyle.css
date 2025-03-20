@@ -123,4 +123,16 @@ border: none;
     flex-direction: row;
     justify-content: space-between;
   }
+
+  .logout-button {
+    all: unset;
+    font-size: clamp(14px, 1.2vw, 16px);
+    padding: 8px 10px;
+    border-radius: 4px;
+    background-color: #2a8c63;
+    color: #fefefe;
+    margin-left: 20px;
+    user-select: none;
+    cursor: pointer;
+  }
 }

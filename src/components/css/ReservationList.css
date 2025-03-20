@@ -80,6 +80,10 @@
     align-items: center;
 }
 
+.filter-controls label {
+    color: black;
+}
+
 .filter-controls select, 
 .filter-controls input,
 .filter-controls button {
@@ -103,4 +107,8 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+.reservation-title {
+    color: black;
 }
