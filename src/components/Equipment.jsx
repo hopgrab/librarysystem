@@ -9,7 +9,7 @@ import handleLogout from '../../backend/auth';
 import { Link } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
 
-import NavBar from "./Nav";
+import NavBar from './Nav';
 
 const Equipment = () => {
     const { session, isAdmin } = useAuth();
@@ -20,6 +20,7 @@ const Equipment = () => {
     const [activeTab, setActiveTab] = useState('All Equipment');
     const [searchQuery, setSearchQuery] = useState('');
 
+    // Fetch equipment with item details
     useEffect(() => {
         const fetchEquipment = async () => {
             setLoading(true);
@@ -28,15 +29,19 @@ const Equipment = () => {
                     .from('equipment')
                     .select(`
                         equipment_id,
-                        name,
-                        location,
-                        category,
-                        status
+                        equipment_name,
+                        status,
+                        items (
+                            copies_total,
+                            copies_available,
+                            description,
+                            image
+                        )
                     `);
-
+                console.log('Fetched Equipment Data:', data);
                 if (error) throw error;
 
-                setEquipment(data);
+                setEquipment(data || []);
             } catch (err) {
                 setError('Failed to fetch equipment.');
                 console.error('Error fetching equipment:', err.message);
@@ -48,35 +53,34 @@ const Equipment = () => {
         fetchEquipment();
     }, []);
 
-    const filteredEquipment = equipment.filter(item => {
-        if (activeTab === 'Available') {
-            return item.status === 'Available';
+    // Filter equipment based on search and status
+    const filteredEquipment = equipment.filter((item) => {
+        if (activeTab === 'Available' && item.status !== 'Available') {
+            return false;
         }
+
+        const query = searchQuery.toLowerCase();
         return (
-            item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.category.toLowerCase().includes(searchQuery.toLowerCase())
+            item.equipment_name.toLowerCase().includes(query) ||
+            (item.items?.description?.toLowerCase().includes(query) ||
+                item.items?.remarks?.toLowerCase().includes(query))
         );
     });
 
+    // Get status color for different states
     const getStatusColor = (status) => {
-        switch (status) {
-            case 'Available':
-                return '#2a8c63';
-            case 'In Use':
-                return '#f59e0b';
-            case 'Reserved':
-                return '#3b82f6';
-            case 'Maintenance':
-                return '#ef4444';
-            default:
-                return '#6b7280';
-        }
+        const statusColors = {
+            Available: '#2a8c63',
+            'In Use': '#f59e0b',
+            Reserved: '#3b82f6',
+            Maintenance: '#ef4444',
+        };
+        return statusColors[status] || '#6b7280';
     };
 
     return (
         <div className="equipment-container">
-            <NavBar/>
+            <NavBar />
 
             <div className="content-wrapper">
                 <div className="dashboard">
@@ -108,6 +112,10 @@ const Equipment = () => {
                             >
                                 Available
                             </button>
+                            {/* Add Equipment Button with Link */}
+                            <Link to="/add-equipment" className="tab-button add-equipment-btn">
+                                Add Equipment
+                            </Link>
                             {session && (
                                 <>
                                     <button
@@ -133,20 +141,42 @@ const Equipment = () => {
 
                 <div className="equipment-grid">
                     {filteredEquipment.length > 0 ? (
-                        filteredEquipment.map(item => (
+                        filteredEquipment.map((item) => (
                             <div className="equipment-card" key={item.equipment_id}>
                                 <div className="equipment-details">
-                                    <h3 className="equipment-name">{item.name}</h3>
-                                    <p className="equipment-location">Location: {item.location}</p>
-                                    <div className="equipment-meta">
-                                        <span className="equipment-category">{item.category}</span>
-                                        <span
-                                            className="equipment-status"
-                                            style={{ backgroundColor: getStatusColor(item.status) }}
-                                        >
-                                            {item.status}
-                                        </span>
-                                    </div>
+                                    <h3 className="equipment-name">{item.equipment_name}</h3>
+                                    {item.items ? (
+                                        <div className="item-details">
+                                            <div className="equipment-image">
+                                                <img
+                                                    src={
+                                                        item.items.image ||
+                                                        'https://via.placeholder.com/150'
+                                                    }
+                                                    alt={item.equipment_name}
+                                                />
+                                            </div>
+                                            <p className="equipment-description">
+                                                {item.items.description || 'No description available.'}
+                                            </p>
+                                            <p className="equipment-copies">
+                                                Copies Available: {item.items.copies_available || 0} /{' '}
+                                                {item.items.copies_total || 0}
+                                            </p>
+                                            <div className="equipment-meta">
+                                                <span
+                                                    className="equipment-status"
+                                                    style={{
+                                                        backgroundColor: getStatusColor(item.status),
+                                                    }}
+                                                >
+                                                    {item.status}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <p>No item details available.</p>
+                                    )}
                                 </div>
                             </div>
                         ))
