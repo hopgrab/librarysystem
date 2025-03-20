@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import './css/LoginPage.css';
+import './css/Login.css';
+import { useNavigate } from 'react-router-dom'; 
 import LogoImage from '../assets/Logo.jpg';
 
-const LoginPage = () => {
+//backend
+import supabase from '../../backend/supabase-client';
+
+const Login = () => {
+    const navigate = useNavigate(); 
     const [isSignUp, setIsSignUp] = useState(false);
     const [formData, setFormData] = useState({
       fullName: '',
@@ -19,15 +24,22 @@ const LoginPage = () => {
       }));
     };
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log('Form submitted:', formData);
-      // Add your authentication logic here
+    
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.username,  // Assuming username is an email for simplicity
+        password: formData.password,
+      });
+    
+      if (error) {
+        alert(`Login error: ${error.message}`);
+      } else {
+        alert('Login successful!');
+        navigate('/'); 
+      }
     };
-  
-    const toggleMode = (mode) => {
-      setIsSignUp(mode === 'signup');
-    };
+    
   
     return (
       <div className="login-container">
@@ -37,23 +49,8 @@ const LoginPage = () => {
         </div>
         
         <div className="login-form-container">
-          <h1 className="welcome-text">Welcome<br/>Back</h1>
-          <p className="subtitle">Please enter your details</p>
-          
-          <div className="toggle-container">
-            <div 
-              className={`toggle-option ${!isSignUp ? 'active' : ''}`}
-              onClick={() => toggleMode('signin')}
-            >
-              Sign in
-            </div>
-            <div 
-              className={`toggle-option ${isSignUp ? 'active' : ''}`}
-              onClick={() => toggleMode('signup')}
-            >
-              Sign up
-            </div>
-          </div>
+          <h1 className="welcome-text">Welcome Staff Members!</h1>
+          <br/>
           
           <form onSubmit={handleSubmit}>
             {isSignUp && (
@@ -91,7 +88,7 @@ const LoginPage = () => {
                   required={!isSignUp}
                 />
               </div>
-            )}
+            )} 
             
             <div className="form-group">
               <input
@@ -124,4 +121,4 @@ const LoginPage = () => {
     );
   };
   
-  export default LoginPage;
+  export default Login;

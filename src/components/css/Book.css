@@ -10,9 +10,14 @@ body {
 }
 
 .announcement-container {
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
     padding-top: 3%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .navbar {
@@ -76,11 +81,12 @@ body {
     margin-left: 12px;
 }
 
-/* Book Details Styling */
 .book-container {
+    width: 100%; 
     max-width: 100%;
-    margin: 0 auto;
-    padding: 30px;
+    height: 100%;
+    margin: 0;
+    padding: 30px 40px; 
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -110,10 +116,11 @@ body {
 
 .book-details {
     display: flex;
-    flex-direction: row; /* Changed back to row */
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: stretch; /* Ensures both columns fill equal height */
     gap: 40px;
     width: 100%;
+    height: 100%; /* Ensure parent fills height */
 }
 
 .book-cover {
@@ -133,14 +140,13 @@ body {
 }
 
 .book-info {
-    flex: 1; 
-    width: 100%;
-    background-color: transparent; 
-    padding: 0;
-    box-shadow: none;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
 }
+
 
 .book-title {
     font-size: 28px;
@@ -162,10 +168,17 @@ body {
 }
 
 .book-status {
-    padding: 4px 10px;
-    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* Adds space between status and count */
+    padding: 4px 12px; /* Adjust padding for better spacing */
+}
+
+.inventory-count {
+    margin-left: 4px; /* Creates space between status text and count */
+    font-weight: normal;
     font-size: 14px;
-    font-weight: 500;
+    color: #2a8c63;
 }
 
 .book-status.available {
@@ -190,10 +203,11 @@ body {
 }
 
 .book-actions {
+    width: 100%;
     display: flex;
-    gap: 10px;
-    background-color: transparent;
-    color: #2a8c63;
+    justify-content: center;
+    margin-top: auto;
+    gap: 12px;
 }
 
 .borrow-button, .reserve-button {
@@ -215,4 +229,39 @@ button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
+}
+
+.inventory-count {
+    font-weight: normal;
+    font-size: 14px;
+    color: #666;
+    margin-left: 8px;
+}
+
+.edit-button,
+.archive-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.edit-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.archive-button {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.archive-button:hover {
+    background-color: #d32f2f;
 }

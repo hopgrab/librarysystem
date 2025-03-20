@@ -1,0 +1,147 @@
+/* General Container */
+.manage-account-container {
+    width: 100vw;
+    height: 100vh;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Title */
+.account-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Error Message */
+.error {
+    color: red;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Filter Controls */
+.filter-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 6px;
+}
+
+.filter-controls label {
+    font-weight: bold;
+}
+
+.filter-controls select {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#sort-button {
+    padding: 8px 12px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#sort-button:hover {
+    background: #0056b3;
+}
+
+/* Table */
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.account-table th {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.account-table td {
+    color: black; /* Fix applied: Ensures text in rows is visible */
+    background: white; /* Optional: Avoid transparency issues */
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Alternating Row Colors */
+.account-table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+    color: black; /* Fix applied */
+}
+
+.account-table tbody tr:nth-child(odd) {
+    background: #ffffff;
+    color: black; /* Fix applied */
+}
+
+/* Buttons */
+button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.activate-button {
+    background: #28a745;
+    color: white;
+}
+
+.activate-button:hover {
+    background: #218838;
+}
+
+.deactivate-button {
+    background: #dc3545;
+    color: white;
+}
+
+.deactivate-button:hover {
+    background: #c82333;
+}
+
+.delete-button {
+    background: #ff0000;
+    color: white;
+    margin-left: 5px;
+}
+
+.delete-button:hover {
+    background: #cc0000;
+}
+
+/* Back Button */
+.back-button-container {
+    margin-top: 20px;
+}
+
+.back-button {
+    padding: 10px 20px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    background: #5a6268;
+}

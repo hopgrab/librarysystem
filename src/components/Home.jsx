@@ -1,0 +1,192 @@
+import React, { useState, useEffect } from 'react';
+import './css/Home.css';
+import LogoImage from '../assets/Logo.jpg';
+
+// Backend
+import supabase from '../../backend/supabase-client';
+import handleLogout from '../../backend/auth'; 
+import { Link } from 'react-router-dom';
+import useAuth from './hooks/useAuth';
+
+const Home = () => {
+  const { session, isAdmin } = useAuth();
+
+  // State for storing fetched books
+  const [newArrivals, setNewArrivals] = useState([]);
+  const [newArrivalsIndex, setNewArrivalsIndex] = useState(0);
+  
+  const itemsToShow = 5; // Number of carousel items to show at a time
+  const placeholders = [
+    { id: 101, title: 'Placeholder Book 1', author: 'Unknown' },
+    { id: 102, title: 'Placeholder Book 2', author: 'Unknown' },
+    { id: 103, title: 'Placeholder Book 3', author: 'Unknown' },
+    { id: 104, title: 'Placeholder Book 4', author: 'Unknown' },
+    { id: 105, title: 'Placeholder Book 5', author: 'Unknown' },
+    { id: 106, title: 'Placeholder Book 6', author: 'Unknown' },
+    { id: 107, title: 'Placeholder Book 7', author: 'Unknown' },
+    { id: 108, title: 'Placeholder Book 8', author: 'Unknown' },
+    { id: 109, title: 'Placeholder Book 9', author: 'Unknown' },
+    { id: 110, title: 'Placeholder Book 10', author: 'Unknown' },
+  ];
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const { data, error } = await supabase
+        .from('books')
+        .select(`
+          book_id, 
+          title, 
+          author, 
+          items(image)
+        `)
+        .order('date_added', { ascending: false })
+        .limit(10);
+  
+      if (error) {
+        console.error('Error fetching books:', error);
+      } else {
+        // Format books with image URLs
+        const formattedBooks = data.map(book => ({
+          book_id: book.book_id,
+          title: book.title,
+          author: book.author,
+          image: book.items ? book.items.image : null, // Ensure image exists
+        }));
+  
+        // Fill placeholders if fewer than 10 books
+        const filledBooks = [...formattedBooks, ...placeholders.slice(formattedBooks.length)];
+        setNewArrivals(filledBooks);
+      }
+    };
+  
+    fetchBooks();
+  }, []);
+  
+
+  // Carousel navigation
+  const nextNewArrivals = () => {
+    setNewArrivalsIndex(prev => 
+      prev + itemsToShow >= newArrivals.length ? 0 : prev + 1
+    );
+  };
+
+  const prevNewArrivals = () => {
+    setNewArrivalsIndex(prev => 
+      prev === 0 ? Math.max(0, newArrivals.length - itemsToShow) : prev - 1
+    );
+  };
+
+  // Get items to display in carousel
+  const displayedNewArrivals = [];
+  for (let i = 0; i < itemsToShow; i++) {
+    const newArrivalIndex = (newArrivalsIndex + i) % newArrivals.length;
+    displayedNewArrivals.push(newArrivals[newArrivalIndex]);
+  }
+
+  return (
+    <div className="home-container">
+      {/* Navigation Bar */}
+      <nav className="navbar">
+        <div className="nav-logo-container">
+          <img src={LogoImage} alt="Logo" className="nav-logo" />
+          <h2 className="nav-title">The Strong Tower Christian Academy</h2>
+        </div>
+        <div className="nav-links">
+          <a href="#" className="nav-link active">Home</a>
+          <Link to="/lib" className="nav-link">Books</Link>
+          <Link to="/announcements" className="nav-link">Announcements</Link>
+          {session && (
+            <>
+              <Link to="/equipment" className="nav-link">Equipment</Link>
+              {isAdmin && <Link to="/manage-account" className="nav-link">Management</Link>}
+            </>
+          )}
+          {session ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : (
+            <Link to="/login" className="login-button">Login</Link>
+          )}
+        </div>
+      </nav>
+      
+      <div className="content-wrapper">
+        <div className="main-content">
+          {/* New Arrivals Section */}
+          <section className="carousel-section">
+            <div className="section-header">
+              <h2 className="section-title" style={{ marginTop: '50px' }}>New Arrivals</h2>
+            </div>
+            
+            <div className="carousel-container">
+              <button className="carousel-nav prev" onClick={prevNewArrivals}>
+                &#10094;
+              </button>
+              
+              {displayedNewArrivals.map(item => (
+                item && (
+                  <Link 
+                    key={item.book_id || item.id} 
+                    to={`/book/${item.book_id || item.id}`} 
+                    className='carousel-card-link'
+                  >
+                    <div key={item.book_id || item.id} className="carousel-card">
+                      <div className="card-image">
+                        {item.image ? (
+                          <img src={item.image} alt={item.title} />
+                        ) : (
+                          <div className="placeholder">No Image</div>
+                        )}
+                      </div>
+                      <div className="card-details">
+                        <h3>{item.title}</h3>
+                        <p>{item.author}</p>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              ))}
+              
+              <button className="carousel-nav next" onClick={nextNewArrivals}>
+                &#10095;
+              </button>
+            </div>
+          </section>
+          
+          {/* Announcements Section */}
+          <section className="announcements-section">
+            <div className="section-header">
+              <h2 className="section-title">Announcements</h2>
+            </div>
+            
+            <div className="announcements-container">
+              {/* Hardcoded Announcements */}
+              <div className="announcement-card">
+                <div className="announcement-date">Feb 28, 2025</div>
+                <h3 className="announcement-title">Library System Update</h3>
+                <p className="announcement-content">
+                  Our digital library system will undergo maintenance on Feb 28 from 10 PM - 12 AM.
+                </p>
+              </div>
+              <div className="announcement-card">
+                <div className="announcement-date">Feb 20, 2025</div>
+                <h3 className="announcement-title">New Arrivals: March Collection</h3>
+                <p className="announcement-content">
+                  Exciting news! We've added 50+ new books across fiction and non-fiction categories.
+                </p>
+              </div>
+              <div className="announcement-card">
+                <div className="announcement-date">Feb 15, 2025</div>
+                <h3 className="announcement-title">Reminder: Return Overdue Books</h3>
+                <p className="announcement-content">
+                  Please return overdue books by Feb 18 to avoid late fees. Check your borrowed items list.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;

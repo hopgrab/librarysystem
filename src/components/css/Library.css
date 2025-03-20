@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f5f5;
@@ -6,7 +10,7 @@ body {
 .books-container {
   width: 100%;
   min-height: 100vh;
-  padding: 80px 0 0 0;
+  padding-top: 200px;
 }
 
 .navbar {
@@ -73,12 +77,12 @@ body {
 
 /* Dashboard styles */
 .dashboard {
+  width: 100%;
   background-color: #fff;
   border-radius: 8px;
   padding: 20px 40px;
-  margin: 20px 40px;
+  margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  padding-top: 20%;
 }
 
 .dashboard-title {
@@ -174,9 +178,9 @@ body {
 }
 
 .book-image {
-  height: 100%;
+  height: 200px;
   width: 100%;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .book-details {
@@ -191,16 +195,20 @@ body {
 }
 
 .book-title {
-  font-size: 11px;
+  font-size: 12px; /* Slightly larger for better readability */
   color: #333;
   margin: 0;
   display: -webkit-box;
-  line-clamp: 2;
+  -webkit-line-clamp: 2; /* Limits text to 2 lines */
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis; /* Adds '...' when the text overflows */
   max-height: 2.6em;
   line-height: 1.3;
-  padding-bottom: -10px;
+  padding-bottom: 0; /* Corrects negative spacing */
+  word-break: break-word; /* Ensures long words don't overflow */
 }
+
 
 .book-author {
   font-size: 13px;
@@ -233,9 +241,12 @@ body {
   color: white;
   padding: 2px 6px;
   border-radius: 4px;
-  width: 90px;
+  display: inline-block; /* Ensures it resizes based on content */
   text-align: center;
+  max-width: fit-content; /* Automatically fits the text */
+  min-width: 60px; /* Ensures small statuses still look consistent */
 }
+
 
 /* Responsive styles */
 @media (min-width: 1200px) {
@@ -267,3 +278,112 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.no-books-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #6b7280;
+  font-weight: 500;
+  padding: 20px;
+  width: 100%;
+}
+
+.form-container {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container input, 
+.form-container select, 
+.form-container textarea {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-container button {
+  background-color: #2a8c63;
+  color: white;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.form-container button:hover {
+  background-color: #23714e;
+}
+
+.add-book-button {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.add-book-button:hover {
+  background-color: #0056b3;
+}
+
+.dropdown {
+  position: absolute;
+  background-color: #222;
+  color: white;
+  border: 1px solid #555;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%; /* Ensures it matches input width */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1000; /* Keeps dropdown above other elements */
+  top: 100%; /* Moves the dropdown below the input */
+  left: 0;
+}
+
+.dropdown li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dropdown li:hover {
+  background-color: #444;
+}
+
+/* Ensure the input container is positioned properly */
+.search-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.search-container input {
+  width: 100%; /* Makes it take full width */
+  padding: 12px; /* Increases padding for better appearance */
+  font-size: 1rem; /* Adjusts text size */
+  height: 100%;
+}
+

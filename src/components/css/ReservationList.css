@@ -1,0 +1,106 @@
+.reservation-list-container {
+    width: 100vw;
+    height:100vh;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.reservation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    color: black;
+}
+
+.reservation-table th, 
+.reservation-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.reservation-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.book-thumbnail {
+    width: 80px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.approve-button, .deny-button, .back-button {
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    color: white;
+}
+
+.approve-button {
+    background-color: #28a745;
+}
+
+.deny-button {
+    background-color: #dc3545;
+}
+
+.approve-button:disabled, .deny-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+.back-button {
+    background-color: #007bff;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.back-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.filter-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.filter-controls select, 
+.filter-controls input,
+.filter-controls button {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.filter-controls button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.filter-controls button:hover {
+    background-color: #0056b3;
+}
+
+.back-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
