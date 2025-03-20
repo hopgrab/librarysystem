@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../backend/supabase-client";
+import "./css/BorrowingBookForm.css"
 
 const BorrowBookForm = () => {
     const navigate = useNavigate();

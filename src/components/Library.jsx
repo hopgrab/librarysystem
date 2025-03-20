@@ -209,7 +209,7 @@ const Library = () => {
                         ))
                     ) : (
                         <div className="no-books-message">
-                            📚 No books found. Try searching for another title or category.
+                            📚 No books found. Try searching for another title or category. 
                         </div>
                     )}
                 </div>
