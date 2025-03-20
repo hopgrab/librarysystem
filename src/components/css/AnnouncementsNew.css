@@ -1,0 +1,29 @@
+.announcement-container.new {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 80px;
+
+    color: #121213;
+}
+
+.announcement-container.new .content-wrapper {
+    all: unset;
+}
+
+.announcement-container.new .content-wrapper .announcements-section .announcements-list {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.announcement-container.new .content-wrapper .announcements-section .announcements-list .announcement-item {
+    background-color: #fefefe;
+    border-radius: 6px;
+    padding: 10px;
+}

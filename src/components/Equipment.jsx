@@ -9,6 +9,8 @@ import handleLogout from '../../backend/auth';
 import { Link } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
 
+import NavBar from "./Nav";
+
 const Equipment = () => {
     const { session, isAdmin } = useAuth();
 
@@ -74,28 +76,7 @@ const Equipment = () => {
 
     return (
         <div className="equipment-container">
-            <nav className="navbar">
-                <div className="nav-logo-container">
-                    <img src={LogoImage} alt="Logo" className="nav-logo" />
-                    <h2 className="nav-title">The Strong Tower Christian Academy</h2>
-                </div>
-                <div className="nav-links">
-                    <Link to="/" className="nav-link">Home</Link>
-                    <Link to="/lib" className="nav-link">Books</Link>
-                    <Link to="/announcements" className="nav-link">Announcements</Link>
-                    {session && (
-                        <>
-                            <a href="#" className="nav-link active">Equipment</a>
-                            {isAdmin && <Link to="/manage-account" className="nav-link">Management</Link>}
-                        </>
-                    )}
-                    {session ? (
-                        <button onClick={handleLogout}>Logout</button>
-                    ) : (
-                        <Link to="/login" className="login-button">Login</Link>
-                    )}
-                </div>
-            </nav>
+            <NavBar/>
 
             <div className="content-wrapper">
                 <div className="dashboard">

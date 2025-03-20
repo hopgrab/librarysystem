@@ -12,6 +12,8 @@ import useAuth from './hooks/useAuth';
 import BookBorrowingImage from '../assets/book_borrowing.jpg';
 import AddBookImage from '../assets/add_book.jpg';
 
+import NavBar from "./Nav";
+
 const Library = () => {
     const { session, isAdmin } = useAuth();
 
@@ -121,28 +123,7 @@ const Library = () => {
 
     return (
         <div className="books-container"> 
-            <nav className="navbar">
-                <div className="nav-logo-container">
-                    <img src={LogoImage} alt="Logo" className="nav-logo" />
-                    <h2 className="nav-title">The Strong Tower Christian Academy</h2>
-                </div>
-                <div className="nav-links">
-                    <Link to="/" className="nav-link">Home</Link>
-                    <a href="#" className="nav-link active">Books</a>
-                    <Link to="/announcements" className="nav-link">Announcements</Link>
-                    {session && (
-                        <>
-                            <Link to ="/equipment" className="nav-link">Equipment</Link>
-                            {isAdmin && <Link to="/manage-account" className="nav-link">Management</Link>}
-                        </>
-                    )}
-                    {session ? (
-                      <button onClick={handleLogout}>Logout</button>
-                    ) : (
-                      <Link to="/login" className="login-button">Login</Link>
-                    )}
-                </div>
-            </nav>
+            <NavBar/>
 
             <div className="dashboard">
                 <h2 className="dashboard-title">Dashboard</h2>

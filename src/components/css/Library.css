@@ -10,69 +10,7 @@ body {
 .books-container {
   width: 100%;
   min-height: 100vh;
-  padding-top: 200px;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-}
-
-.nav-logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.nav-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 12px;
-}
-
-.nav-title {
-  font-size: 18px;
-  font-weight: 500;
-  color: #333;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  color: #333;
-}
-
-.nav-link, .nav-link:hover {
-  margin: 0 12px;
-  text-decoration: none;
-  color: #444;
-  font-size: 14px;
-  padding: 8px 12px;
-}
-
-.nav-link.active {
-  font-weight: 600;
-  color: #000;
-}
-
-.login-button, .login-button:hover {
-  padding: 8px 16px;
-  background-color: #2a8c63;
-  color: white;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 14px;
-  margin-left: 12px;
+  margin-top: 85px;
 }
 
 /* Dashboard styles */
@@ -94,32 +32,33 @@ body {
 
 .dashboard-controls {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 20px;
 }
 
 .search-container {
-  flex: 0 0 300px;
   position: relative;
 }
 
-.search-input {
+.books-container .dashboard .dashboard-controls .search-container .search-input {
   width: 100%;
-  padding: 8px 35px 8px 12px;
+  height: 40px;
+  /* padding: 8px 35px 8px 12px; */
   border: 1px solid #ddd;
+  color: #121213;
+  outline: none;
+  background-color: #ccc;
   border-radius: 4px;
   font-size: 14px;
+  z-index: unset;
+  margin: unset;
 }
 
-.search-button {
+.books-container .dashboard .dashboard-controls .search-container .search-button {
   position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #777;
+  top: 16px;
+  right: 5px;
 }
 
 .tabs-container {
@@ -149,9 +88,11 @@ body {
 /* Books grid styles */
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding: 20px 40px;
+  gap: 20px;
+
+  border: 1px solid red;
 }
 
 .book-card {
@@ -160,6 +101,8 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   height: 350px;
+  width: 100%;
+  aspect-ratio: 2 / 3;
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease;
@@ -178,29 +121,31 @@ body {
 }
 
 .book-image {
-  height: 200px;
+  height: 100%;
   width: 100%;
-  object-fit: fill;
+  object-fit: cover;
 }
 
 .book-details {
-  padding: 6px;
-  height: calc(100% - 190px);
+  height: calc(100% - 240px);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
 }
 
 .book-info {
-  margin-bottom: 4px;
+  width: fit-content;
 }
 
 .book-title {
   font-size: 12px; /* Slightly larger for better readability */
+  font-weight: bold;
   color: #333;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* Limits text to 2 lines */
-  -webkit-box-orient: vertical;
+  line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis; /* Adds '...' when the text overflows */
   max-height: 2.6em;
@@ -222,6 +167,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  align-items: flex-start;
 }
 
 .book-genre {
@@ -249,28 +195,13 @@ body {
 
 
 /* Responsive styles */
-@media (min-width: 1200px) {
-  .books-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-width: 1199px) and (min-width: 992px) {
-  .books-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-@media (max-width: 991px) and (min-width: 768px) {
-  .books-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 @media (max-width: 767px) and (min-width: 576px) {
-  .books-grid {
-    grid-template-columns: repeat(3, 1fr);
+  .dashboard-controls {
+    flex-direction: column;
   }
+  
+  .search-container {
+    flex: unset;
 }
 
 @media (max-width: 575px) {
@@ -385,5 +316,6 @@ body {
   padding: 12px; /* Increases padding for better appearance */
   font-size: 1rem; /* Adjusts text size */
   height: 100%;
+}
 }
 

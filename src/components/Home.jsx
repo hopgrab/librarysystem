@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import './css/Home.css';
-import LogoImage from '../assets/Logo.jpg';
+import React, { useState, useEffect } from "react";
+import "./css/Home.css";
+import LogoImage from "../assets/Logo.jpg";
 
 // Backend
-import supabase from '../../backend/supabase-client';
-import handleLogout from '../../backend/auth'; 
-import { Link } from 'react-router-dom';
-import useAuth from './hooks/useAuth';
+import supabase from "../../backend/supabase-client";
+import handleLogout from "../../backend/auth";
+import { Link } from "react-router-dom";
+import useAuth from "./hooks/useAuth";
+
+import NavBar from "./Nav";
 
 const Home = () => {
   const { session, isAdmin } = useAuth();
@@ -14,64 +16,79 @@ const Home = () => {
   // State for storing fetched books
   const [newArrivals, setNewArrivals] = useState([]);
   const [newArrivalsIndex, setNewArrivalsIndex] = useState(0);
-  
-  const itemsToShow = 5; // Number of carousel items to show at a time
+  const [itemsToShow, setItemsToShow] = useState(5);
+
   const placeholders = [
-    { id: 101, title: 'Placeholder Book 1', author: 'Unknown' },
-    { id: 102, title: 'Placeholder Book 2', author: 'Unknown' },
-    { id: 103, title: 'Placeholder Book 3', author: 'Unknown' },
-    { id: 104, title: 'Placeholder Book 4', author: 'Unknown' },
-    { id: 105, title: 'Placeholder Book 5', author: 'Unknown' },
-    { id: 106, title: 'Placeholder Book 6', author: 'Unknown' },
-    { id: 107, title: 'Placeholder Book 7', author: 'Unknown' },
-    { id: 108, title: 'Placeholder Book 8', author: 'Unknown' },
-    { id: 109, title: 'Placeholder Book 9', author: 'Unknown' },
-    { id: 110, title: 'Placeholder Book 10', author: 'Unknown' },
+    { id: 101, title: "Placeholder Book 1", author: "Unknown" },
+    { id: 102, title: "Placeholder Book 2", author: "Unknown" },
+    { id: 103, title: "Placeholder Book 3", author: "Unknown" },
+    { id: 104, title: "Placeholder Book 4", author: "Unknown" },
+    { id: 105, title: "Placeholder Book 5", author: "Unknown" },
+    { id: 106, title: "Placeholder Book 6", author: "Unknown" },
+    { id: 107, title: "Placeholder Book 7", author: "Unknown" },
+    { id: 108, title: "Placeholder Book 8", author: "Unknown" },
+    { id: 109, title: "Placeholder Book 9", author: "Unknown" },
+    { id: 110, title: "Placeholder Book 10", author: "Unknown" },
   ];
 
   useEffect(() => {
     const fetchBooks = async () => {
       const { data, error } = await supabase
-        .from('books')
-        .select(`
+        .from("books")
+        .select(
+          `
           book_id, 
           title, 
           author, 
           items(image)
-        `)
-        .order('date_added', { ascending: false })
+        `
+        )
+        .order("date_added", { ascending: false })
         .limit(10);
-  
+
       if (error) {
-        console.error('Error fetching books:', error);
+        console.error("Error fetching books:", error);
       } else {
-        const formattedBooks = data.map(book => ({
+        const formattedBooks = data.map((book) => ({
           book_id: book.book_id,
           title: book.title,
           author: book.author,
           image: book.items ? book.items.image : null,
         }));
-  
-        const filledBooks = [...formattedBooks, ...placeholders.slice(formattedBooks.length)];
+
+        const filledBooks = [
+          ...formattedBooks,
+          ...placeholders.slice(formattedBooks.length),
+        ];
         setNewArrivals(filledBooks);
       }
     };
-  
+
     fetchBooks();
   }, []);
-  
+
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsToShow(window.innerWidth <= 950 ? 3 : 5);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
       const { data, error } = await supabase
-        .from('announcements')
-        .select('*')
-        .order('time', { ascending: false })
+        .from("announcements")
+        .select("*")
+        .order("time", { ascending: false })
         .limit(3);
 
       if (error) {
-        console.error('Error fetching announcements:', error);
+        console.error("Error fetching announcements:", error);
       } else {
         setAnnouncements(data);
       }
@@ -82,13 +99,13 @@ const Home = () => {
 
   // Carousel navigation
   const nextNewArrivals = () => {
-    setNewArrivalsIndex(prev => 
+    setNewArrivalsIndex((prev) =>
       prev + itemsToShow >= newArrivals.length ? 0 : prev + 1
     );
   };
 
   const prevNewArrivals = () => {
-    setNewArrivalsIndex(prev => 
+    setNewArrivalsIndex((prev) =>
       prev === 0 ? Math.max(0, newArrivals.length - itemsToShow) : prev - 1
     );
   };
@@ -103,94 +120,83 @@ const Home = () => {
   return (
     <div className="home-container">
       {/* Navigation Bar */}
-      <nav className="navbar">
-        <div className="nav-logo-container">
-          <img src={LogoImage} alt="Logo" className="nav-logo" />
-          <h2 className="nav-title">The Strong Tower Christian Academy</h2>
-        </div>
-        <div className="nav-links">
-          <a href="#" className="nav-link active">Home</a>
-          <Link to="/lib" className="nav-link">Books</Link>
-          <Link to="/announcements" className="nav-link">Announcements</Link>
-          {session && (
-            <>
-              <Link to="/equipment" className="nav-link">Equipment</Link>
-              {isAdmin && <Link to="/manage-account" className="nav-link">Management</Link>}
-            </>
-          )}
-          {session ? (
-            <button onClick={handleLogout}>Logout</button>
-          ) : (
-            <Link to="/login" className="login-button">Login</Link>
-          )}
-        </div>
-      </nav>
-      
+      <NavBar />
+
       <div className="content-wrapper">
         <div className="main-content">
           {/* New Arrivals Section */}
           <section className="carousel-section">
             <div className="section-header">
-              <h2 className="section-title" style={{ marginTop: '50px' }}>New Arrivals</h2>
+              <h2 className="section-title" style={{ marginTop: "50px" }}>
+                New Arrivals
+              </h2>
             </div>
-            
+
             <div className="carousel-container">
               <button className="carousel-nav prev" onClick={prevNewArrivals}>
                 &#10094;
               </button>
-              
-              {displayedNewArrivals.map(item => (
-                item && (
-                  <Link 
-                    key={item.book_id || item.id} 
-                    to={`/book/${item.book_id || item.id}`} 
-                    className='carousel-card-link'
-                  >
-                    <div key={item.book_id || item.id} className="carousel-card">
-                      <div className="card-image">
-                        {item.image ? (
-                          <img src={item.image} alt={item.title} />
-                        ) : (
-                          <div className="placeholder">No Image</div>
-                        )}
-                      </div>
-                      <div className="card-details">
-                        <h3>{item.title}</h3>
-                        <p>{item.author}</p>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              ))}
-              
+
+              <div className="new-arrivals-list">
+                {displayedNewArrivals.map(
+                  (item) =>
+                    item && (
+                      <Link
+                        key={item.book_id || item.id}
+                        to={`/book/${item.book_id || item.id}`}
+                        className="carousel-card-link"
+                      >
+                        <div
+                          key={item.book_id || item.id}
+                          className="carousel-card"
+                        >
+                          <div className="card-image">
+                            {item.image ? (
+                              <img src={item.image} alt={item.title} />
+                            ) : (
+                              <div className="placeholder">No Image</div>
+                            )}
+                          </div>
+                          <div className="card-details">
+                            <h3>{item.title}</h3>
+                            <p>{item.author}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                )}
+              </div>
+
               <button className="carousel-nav next" onClick={nextNewArrivals}>
                 &#10095;
               </button>
             </div>
           </section>
-          
+
           {/* Announcements Section */}
           <section className="announcements-section">
             <div className="section-header">
               <h2 className="section-title">Announcements</h2>
             </div>
-            
+
             <div className="announcements-container">
               {announcements.length > 0 ? (
                 announcements.map((announcement) => (
                   <div key={announcement.id} className="announcement-card">
                     <div className="announcement-date">
-                      {new Date(announcement.time).toLocaleString('en-US', {
-                        month: 'short',
-                        day: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
+                      {new Date(announcement.time).toLocaleString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
                         hour12: true,
                       })}
                     </div>
                     <h3 className="announcement-title">{announcement.title}</h3>
-                    <p className="announcement-content">{announcement.content}</p>
+                    <p className="announcement-content">
+                      {announcement.content}
+                    </p>
                   </div>
                 ))
               ) : (

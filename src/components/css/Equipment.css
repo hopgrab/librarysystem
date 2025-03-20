@@ -20,68 +20,6 @@ body {
     margin: 0 auto;
   }
   
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 24px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-  }
-  
-  .nav-logo-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .nav-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 12px;
-  }
-  
-  .nav-title {
-    font-size: 18px;
-    font-weight: 500;
-    color: #333;
-  }
-  
-  .nav-links {
-    display: flex;
-    align-items: center;
-    color: #333;
-  }
-  
-  .nav-link, .nav-link:hover {
-    margin: 0 12px;
-    text-decoration: none;
-    color: #444;
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-  
-  .nav-link.active {
-    font-weight: 600;
-    color: #000;
-  }
-  
-  .login-button, .login-button:hover {
-    padding: 8px 16px;
-    background-color: #2a8c63;
-    color: white;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 14px;
-    margin-left: 12px;
-  }
-  
   /* Dashboard styles */
   .dashboard {
     width: 100%;
@@ -106,7 +44,6 @@ body {
   }
   
   .search-container {
-    flex: 0 0 300px;
     position: relative;
   }
   

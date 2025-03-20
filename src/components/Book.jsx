@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import handleLogout from '../../backend/auth';
 import Modal from "./Modal";
 
+import NavBar from "./Nav";
+
 const Book = () => {
     const { session, isAdmin } = useAuth();
     const { id } = useParams();
@@ -166,31 +168,9 @@ const Book = () => {
 
     return (
         <div className="announcement-container">
-            <nav className="navbar">
-                <div className="nav-logo-container">
-                    <img src={LogoImage} alt="Logo" className="nav-logo" />
-                    <h2 className="nav-title">The Strong Tower Christian Academy</h2>
-                </div>
-                <div className="nav-links">
-                    <Link to="/" className="nav-link">Home</Link>
-                    <Link to="/lib" className="nav-link">Books</Link>
-                    <Link to="/announcements" className="nav-link">Announcements</Link>
-                    {session && (
-                        <>
-                            <Link to="/equipment" className="nav-link">Equipment</Link>
-                            {isAdmin && <Link to="/management" className="nav-link">Management</Link>}
-                        </>
-                    )}
-                    {session ? (
-                        <button onClick={handleLogout}>Logout</button>
-                    ) : (
-                        <Link to="/login" className="login-button">Login</Link>
-                    )}
-                </div>
-            </nav>
+            <NavBar/>
 
             <div className="book-container">
-
                 <div className="book-details">
                     <div className="book-cover">
                         <img src={bookData.coverImage} alt={`${bookData.title} cover`} className="cover-image" />

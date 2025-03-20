@@ -10,8 +10,7 @@
   }
 
   .announcement-container {
-    width: 100%;
-    min-height: 100vh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,82 +18,20 @@
     background-color: #f5f5f5;
   }
 
-  .content-wrapper {
+  .announcement-container .content-wrapper {
     width: 100%;
     min-width: 1600px;
     padding: 0 24px;
     margin: 0 auto;
   }
 
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 24px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
-    position:fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-  }
-  
-  .nav-logo-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .nav-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 12px;
-  }
-  
-  .nav-title {
-    font-size: 18px;
-    font-weight: 500;
-    color: #333;
-  }
-  
-  .nav-links {
-    display: flex;
-    align-items: center;
-  }
-  
-  .nav-link, .nav-link:hover {
-    margin: 0 12px;
-    text-decoration: none;
-    color: #444;
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-  
-  .nav-link.active {
-    font-weight: 600;
-    color: #000;
-  }
-  
-  .login-button, .login-button:hover {
-    padding: 8px 16px;
-    background-color: #2a8c63;
-    color: white;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 14px;
-    margin-left: 12px;
-  }
-
-  .banner-container {
+  .announcement-container .banner-container {
     width: 100%;
     height: 10vh;
     overflow: hidden;
   }
   
-  .banner-image {
+  .announcement-container .banner-image {
     width: 100%;
     height: 100%;
     background-color: #ddd;
@@ -102,7 +39,7 @@
     background-size: cover;
   }
 
-  .announcements-section {
+  .announcement-container .announcements-section {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
@@ -112,7 +49,7 @@
     align-items: center;
   }
   
-  .announcements-title {
+  .announcement-container .announcements-title {
     text-align: center;
     margin-bottom: 20px;
     font-size: 28px;
@@ -120,7 +57,7 @@
     color: #333;
   }
   
-  .search-container {
+  .announcement-container .search-container {
     display: flex;
     justify-content: center;
     padding-top: 15px;
@@ -131,7 +68,7 @@
     max-height: 50px;
   }
   
-  .search-input {
+  .announcement-container .search-input {
     width: 100%;
     padding: 12px 20px;
     border: 1px solid #ddd;
@@ -141,7 +78,7 @@
     color: #333;
   }
   
-  .search-button {
+  .announcement-container .search-button {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -154,14 +91,14 @@
     padding: 10px;
   }
   
-  .announcements-list {
+  .announcement-container.announcements-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 100%;
   }
   
-  .announcement-item {
+  .announcement-container .announcement-item {
     display: flex;
     background-color: white;
     border-radius: 6px;
@@ -170,7 +107,7 @@
     width: 100%;
   }
   
-  .announcement-date {
+  .announcement-container .announcement-date {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -181,45 +118,45 @@
     text-align: center;
   }
   
-  .date-month {
+  .announcement-container .date-month {
     font-weight: 600;
     font-size: 14px;
     color: #333;
   }
   
-  .date-year {
+  .announcement-container .date-year {
     font-size: 12px;
     color: #777;
   }
   
-  .announcement-content {
+  .announcement-container .announcement-content {
     padding: 15px;
     flex-grow: 1;
   }
   
-  .announcement-title {
+  .announcement-container .announcement-title {
     margin-bottom: 8px;
     font-size: 16px;
     font-weight: 600;
     color: #333;
   }
   
-  .announcement-description {
+  .announcement-container .announcement-description {
     font-size: 14px;
     color: #666;
     line-height: 1.5;
   }
 
 
-  .add-announcement-form {
+  .announcement-container .add-announcement-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin: 20px 0;
 }
 
-.add-announcement-form input,
-.add-announcement-form textarea {
+.announcement-container .add-announcement-form input,
+.announcement-container .add-announcement-form textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -227,7 +164,7 @@
     font-size: 16px;
 }
 
-.add-announcement-button {
+.announcement-container .add-announcement-button {
     background-color: #4CAF50;
     color: white;
     padding: 10px;
@@ -237,6 +174,6 @@
     font-size: 16px;
 }
 
-.add-announcement-button:hover {
+.announcement-container .add-announcement-button:hover {
     background-color: #45a049;
 }

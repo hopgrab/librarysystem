@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './css/Announcements.css';
+import './css/AnnouncementsNew.css';
 import LogoImage from '../assets/Logo.jpg';
 import { FaSearch, FaEdit } from 'react-icons/fa';
 import supabase from '../../backend/supabase-client';
 import handleLogout from '../../backend/auth';
 import { Link } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
+
+import NavBar from "./Nav";
 
 const Announcements = () => {
     const { session, isAdmin } = useAuth();
@@ -94,33 +96,12 @@ const Announcements = () => {
     };
 
     return (
-        <div className="announcement-container">
-            <nav className="navbar">
-                <div className="nav-logo-container">
-                    <img src={LogoImage} alt="Logo" className="nav-logo" />
-                    <h2 className="nav-title">The Strong Tower Christian Academy</h2>
-                </div>
-                <div className="nav-links">
-                    <a href="/" className="nav-link">Home</a>
-                    <Link to="/lib" className="nav-link">Books</Link>
-                    <Link to="#" className="nav-link active">Announcements</Link>
-                    {session && (
-                        <>
-                            <Link to="/equipment" className="nav-link">Equipment</Link>
-                            {isAdmin && <Link to="/manage-account" className="nav-link">Management</Link>}
-                        </>
-                    )}
-                    {session ? (
-                        <button onClick={handleLogout}>Logout</button>
-                    ) : (
-                        <Link to="/login" className="login-button">Login</Link>
-                    )}
-                </div>
-            </nav>
+        <div className="announcement-container new">
+            <NavBar/>
 
             <div className="content-wrapper">
                 <div className="announcements-section">
-                    <h1 className="announcements-title">Announcements</h1>s
+                    <h1 className="announcements-title">Announcements</h1>
 
                     {/* Add Announcement Button */}
                     {session && isAdmin && (
