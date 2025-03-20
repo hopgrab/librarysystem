@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../../backend/supabase-client";
 import useAuth from "./hooks/useAuth";
 
+import "./css/FormStyle.css"
+
 const AddBookForm = () => {
     const { session } = useAuth();
     const navigate = useNavigate();
